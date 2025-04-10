@@ -17,7 +17,9 @@ const App = () => {
         screenOptions={{
           headerShown: false,
           tabBarShowLabel: false,
-          tabBarActiveTintColor: "#E96E5E"
+          tabBarActiveTintColor: '#E96E5E',
+          tabBarStyle: {height: 60, paddingTop: 10},
+          
         }}>
         <Tab.Screen
           name="Home"
@@ -46,12 +48,15 @@ const App = () => {
             ),
           }}
         />
-        <Tab.Screen name="Account" component={AccountScreen} 
+        <Tab.Screen
+          name="Account"
+          component={AccountScreen}
           options={{
             tabBarIcon: ({size, focused, color}) => (
               <Icon name="user" size={size} color={color} />
             ),
-          }}/>
+          }}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );
