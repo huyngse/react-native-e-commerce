@@ -13,11 +13,45 @@ const Tab = createBottomTabNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Reorder" component={ReorderScreen} />
-        <Tab.Screen name="Cart" component={CartScreen} />
-        <Tab.Screen name="Account" component={AccountScreen} />
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
+          tabBarShowLabel: false,
+          tabBarActiveTintColor: "#E96E5E"
+        }}>
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            tabBarIcon: ({size, focused, color}) => (
+              <Icon name="home" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Reorder"
+          component={ReorderScreen}
+          options={{
+            tabBarIcon: ({size, focused, color}) => (
+              <Icon name="reorder" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Cart"
+          component={CartScreen}
+          options={{
+            tabBarIcon: ({size, focused, color}) => (
+              <Icon name="shopping-cart" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen name="Account" component={AccountScreen} 
+          options={{
+            tabBarIcon: ({size, focused, color}) => (
+              <Icon name="user" size={size} color={color} />
+            ),
+          }}/>
       </Tab.Navigator>
     </NavigationContainer>
   );
