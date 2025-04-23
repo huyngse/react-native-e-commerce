@@ -10,6 +10,7 @@ import React, {useCallback, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import Header from '../components/Header';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import ProductCard from '../components/ProductCard';
 
 const categories = ['Trending Now', 'All', 'New', "Men's", "Women's"];
 
@@ -17,38 +18,64 @@ const HomeScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
     categories[0],
   );
+
+  const CategoryList = () => {
+    return (
+      <FlatList
+        data={categories}
+        keyExtractor={item => item}
+        showsHorizontalScrollIndicator={false}
+        horizontal
+        renderItem={item => {
+          return (
+            <Category
+              item={item.item}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+            />
+          );
+        }}
+        contentContainerStyle={{
+          gap: 5,
+        }}
+      />
+    );
+  };
+
+  const SearchBar = () => {
+    return (
+      <View className="bg-white p-4 my-3 rounded-xl flex-row items-center gap-2">
+        <Icon name="search" size={20} color={'#CCC'} />
+        <TextInput
+          className="flex-1 py-0 text-black"
+          placeholder="Search..."
+          placeholderTextColor={'#CCC'}
+        />
+      </View>
+    );
+  };
   return (
     <LinearGradient colors={['#FDF0F3', '#FFFBFC']} className="px-4 flex-1">
       <Header />
       <View className="p-3">
-        <Text className="text-3xl mt-3">Match Your Style</Text>
-
-        {/* Search bar */}
-        <View className="bg-white p-4 my-3 rounded-xl flex-row items-center gap-2">
-          <Icon name="search" size={20} color={'#CCC'} />
-          <TextInput
-            className="flex-1 py-0 text-black"
-            placeholder="Search..."
-            placeholderTextColor={'#CCC'}
-          />
-        </View>
-
-        {/* Category filter */}
+        {/* Products Section */}
         <FlatList
-          data={categories}
-          keyExtractor={item => item}
-          showsHorizontalScrollIndicator={false}
-          horizontal
-          renderItem={item => {
-            return (
-              <Category
-                item={item.item}
-                selectedCategory={selectedCategory}
-                setSelectedCategory={setSelectedCategory}
-              />
-            );
+          ListHeaderComponent={
+            <>
+              <Text className="text-3xl mt-3">Match Your Style</Text>
+              <SearchBar />
+              <CategoryList />
+            </>
+          }
+          data={[1, 2, 3, 4]}
+          renderItem={() => <ProductCard />}
+          numColumns={2}
+          contentContainerStyle={{
+            gap: 10,
           }}
-          ItemSeparatorComponent={() => <View style={{width: 5}} />}
+          columnWrapperStyle={{
+            gap: 10,
+          }}
         />
       </View>
     </LinearGradient>
@@ -64,11 +91,10 @@ const Category = ({
   selectedCategory?: string;
   setSelectedCategory: (value: string) => void;
 }) => {
-
   const handleOnclick = useCallback(() => {
     setSelectedCategory(item);
   }, []);
-  
+
   return (
     <TouchableOpacity
       className={`${
