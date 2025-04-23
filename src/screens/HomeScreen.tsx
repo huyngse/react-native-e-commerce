@@ -11,8 +11,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import Header from '../components/Header';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ProductCard from '../components/ProductCard';
+import data from '../data/data.json';
+import {Product} from '../types/product';
 
 const categories = ['Trending Now', 'All', 'New', "Men's", "Women's"];
+const jsonData: Product[] = data.products;
 
 const HomeScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
@@ -67,11 +70,13 @@ const HomeScreen = () => {
               <CategoryList />
             </>
           }
-          data={[1, 2, 3, 4]}
-          renderItem={() => <ProductCard />}
+          data={jsonData}
+          keyExtractor={item => item.id + ''}
+          renderItem={item => <ProductCard item={item.item} />}
           numColumns={2}
           contentContainerStyle={{
             gap: 10,
+            paddingBottom: 100,
           }}
           columnWrapperStyle={{
             gap: 10,

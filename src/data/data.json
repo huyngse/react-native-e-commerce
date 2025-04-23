@@ -1,0 +1,34 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "image": "src/assets/product-1.png",
+      "title": "Jacket",
+      "price": 49.99
+    },
+    {
+      "id": 2,
+      "image": "src/assets/product-2.png",
+      "title": "Jeans",
+      "price": 39.99
+    },
+    {
+      "id": 3,
+      "image": "src/assets/product-3.png",
+      "title": "Acrylic Sweater",
+      "price": 29.99
+    },
+    {
+      "id": 4,
+      "image": "src/assets/product-4.png",
+      "title": "Winter Coat",
+      "price": 99.99
+    },
+    {
+      "id": 5,
+      "image": "src/assets/product-5.jpg",
+      "title": "Winter Shirts",
+      "price": 59.99
+    }
+  ]
+}
