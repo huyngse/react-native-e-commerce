@@ -7,8 +7,27 @@ import ReorderScreen from './src/screens/ReorderScreen';
 import CartScreen from './src/screens/CartScreen';
 import AccountScreen from './src/screens/AccountScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import ProductDetailScreen from './src/screens/ProductDetailScreen';
 
 const Tab = createBottomTabNavigator();
+
+export type HomeStackParamList = {
+  Home: undefined;
+  ProductDetail: {productId: string};
+};
+const HomeStackNavigator = createNativeStackNavigator<HomeStackParamList>();
+const HomeStack = () => {
+  return (
+    <HomeStackNavigator.Navigator screenOptions={{headerShown: false}}>
+      <HomeStackNavigator.Screen name="Home" component={HomeScreen} />
+      <HomeStackNavigator.Screen
+        name="ProductDetail"
+        component={ProductDetailScreen}
+      />
+    </HomeStackNavigator.Navigator>
+  );
+};
 
 const App = () => {
   return (
@@ -19,11 +38,11 @@ const App = () => {
           tabBarShowLabel: false,
           tabBarActiveTintColor: '#E96E5E',
           tabBarStyle: {height: 60, paddingTop: 10},
-          
-        }}>
+        }}
+        initialRouteName="HomeStack">
         <Tab.Screen
-          name="Home"
-          component={HomeScreen}
+          name="HomeStack"
+          component={HomeStack}
           options={{
             tabBarIcon: ({size, focused, color}) => (
               <Icon name="home" size={size} color={color} />
