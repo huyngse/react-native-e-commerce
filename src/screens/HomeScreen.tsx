@@ -58,9 +58,9 @@ const HomeScreen = () => {
     );
   };
   return (
-    <LinearGradient colors={['#FDF0F3', '#FFFBFC']} className="px-4 flex-1">
+    <LinearGradient colors={['#FDF0F3', '#FFFBFC']} className="flex-1">
       <Header />
-      <View className="p-3">
+      <View className="p-5">
         {/* Products Section */}
         <FlatList
           ListHeaderComponent={

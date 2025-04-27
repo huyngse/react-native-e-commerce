@@ -54,7 +54,7 @@ const ProductDetailScreen = ({navigation, route}: Props) => {
           source={{uri: `http://localhost:8081/${product.image}`}}
           className="w-100 h-[400px]"
         />
-        <View className="px-5 pb-20">
+        <View className="px-5 pb-5">
           <View className="flex-row justify-between py-3">
             <Text className="text-2xl text-gray-600 font-semibold">
               {product.title}
