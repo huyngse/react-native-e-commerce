@@ -7,6 +7,7 @@ import Header from '../components/Header';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {HomeStackParamList} from '../../App';
 import {formatToUSD} from '../utils/currency';
+import useCartStore from '../store/cart-store';
 
 const jsonData: Product[] = data.products;
 const getProductById = (id: number): Product | undefined => {
@@ -28,6 +29,8 @@ const ProductDetailScreen = ({navigation, route}: Props) => {
   const [selectedSize, setSelectedSize] = useState<string>();
   const [selectedColor, setSelectedColor] = useState<string>();
   const [product, setProduct] = useState<Product>();
+  const addItem = useCartStore(state => state.addItem);
+
   useEffect(() => {
     const productId = route.params.productId;
     const p = getProductById(parseInt(productId));
@@ -45,6 +48,16 @@ const ProductDetailScreen = ({navigation, route}: Props) => {
       </View>
     );
   }
+
+  const handleAddItem = () => {
+    if (!selectedColor) {
+      return;
+    }
+    if (!selectedSize) {
+      return;
+    }
+    addItem(product, selectedColor, selectedSize, 1);
+  };
 
   return (
     <LinearGradient colors={['#FDF0F3', '#FFFBFC']} className="flex-1">
@@ -69,7 +82,7 @@ const ProductDetailScreen = ({navigation, route}: Props) => {
             <View className="flex-row gap-3 mt-2">
               {sizes.map(size => (
                 <TouchableOpacity
-                  className="bg-white rounded-full p-2 aspect-square justify-center items-center"
+                  className="bg-white rounded-full px-2 aspect-square justify-center items-center"
                   key={size}
                   onPress={() => {
                     setSelectedSize(size);
@@ -109,8 +122,8 @@ const ProductDetailScreen = ({navigation, route}: Props) => {
               ))}
             </ScrollView>
           </View>
-          <TouchableOpacity className='rounded-xl bg-[#E55B5B] p-4 w-full items-center justify-center mt-5'>
-            <Text className='text-white font-semibold'>Add to Cart</Text>
+          <TouchableOpacity className="rounded-xl bg-[#E55B5B] p-4 w-full items-center justify-center mt-5" onPress={handleAddItem}>
+            <Text className="text-white font-semibold">Add to Cart</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

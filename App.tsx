@@ -9,6 +9,8 @@ import AccountScreen from './src/screens/AccountScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ProductDetailScreen from './src/screens/ProductDetailScreen';
+import useCartStore from './src/store/cart-store';
+import {Text, View} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,6 +32,7 @@ const HomeStack = () => {
 };
 
 const App = () => {
+  const cartItems = useCartStore(state => state.items);
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -62,9 +65,16 @@ const App = () => {
           name="Cart"
           component={CartScreen}
           options={{
-            tabBarIcon: ({size, focused, color}) => (
-              <Icon name="shopping-cart" size={size} color={color} />
-            ),
+            tabBarIcon: ({size, focused, color}) => {
+              return (
+                <View className="relative">
+                  <Icon name="shopping-cart" size={size} color={color} />
+                  <Text className="-top-1 -right-2 text-xs text-white size-4 justify-center items-center text-center absolute bg-[#E55B5B] rounded-full">
+                    {cartItems.length}
+                  </Text>
+                </View>
+              );
+            },
           }}
         />
         <Tab.Screen

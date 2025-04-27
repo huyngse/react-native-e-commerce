@@ -5,14 +5,13 @@ import { Product } from '../types/product';
 interface CartState {
     items: CartItem[];
     addItem: (product: Product, selectedColor: string, selectedSize: string, quantity: number) => void;
-    removeItem: (productId: number) => void;
+    removeItem: (productId: number, selectedColor: string, selectedSize: string) => void;
     updateQuantity: (productId: number, quantity: number) => void;
     clearCart: () => void;
 }
 
 const useCartStore = create<CartState>((set) => ({
     items: [],
-
     addItem: (product, selectedColor, selectedSize, quantity) => {
         set((state) => {
             const existingItem = state.items.find(item => item.product.id === product.id && item.selectedColor === selectedColor && item.selectedSize === selectedSize);
@@ -29,9 +28,9 @@ const useCartStore = create<CartState>((set) => ({
         });
     },
 
-    removeItem: (productId) => {
+    removeItem: (productId, selectedColor, selectedSize) => {
         set((state) => ({
-            items: state.items.filter(item => item.product.id !== productId)
+            items: state.items.filter(item => item.product.id !== productId || item.selectedColor != selectedColor || item.selectedSize != selectedSize)
         }));
     },
 

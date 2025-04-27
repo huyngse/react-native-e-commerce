@@ -12,41 +12,32 @@ import Header from '../components/Header';
 import {CartItem} from '../types/cart';
 import CartItemCard from '../components/CartItemCard';
 import {formatToUSD} from '../utils/currency';
+import useCartStore from '../store/cart-store';
 
-const cartItems: CartItem[] = [
-  {
-    product: {
-      id: 1,
-      image: 'src/assets/product-1.png',
-      title: 'Jacket',
-      price: 49.99,
-    },
-    quantity: 1,
-    selectedSize: 'S',
-    selectedColor: '#9F632A',
-  },
-  {
-    product: {
-      id: 2,
-      image: 'src/assets/product-2.png',
-      title: 'Jeans',
-      price: 39.99,
-    },
-    quantity: 1,
-    selectedSize: 'M',
-    selectedColor: '#1F44A3',
-  },
-];
 const CartScreen = () => {
+  const cartItems = useCartStore(state => state.items);
   const totalPrice = cartItems.reduce((accumulator, item) => {
     return accumulator + item.product.price * item.quantity;
   }, 0);
+
+  if (cartItems.length == 0) {
+    return (
+      <LinearGradient colors={['#FDF0F3', '#FFFBFC']} className="flex-1">
+        <Header title="My Cart" canGoBack />
+        <View className="items-center justify-center flex-1">
+          <Text className="text-2xl text-gray-500">Empty Cart</Text>
+        </View>
+      </LinearGradient>
+    );
+  }
   return (
     <LinearGradient colors={['#FDF0F3', '#FFFBFC']} className="flex-1">
       <Header title="My Cart" canGoBack />
       <FlatList
         data={cartItems}
-        keyExtractor={item => item.product.id + ''}
+        keyExtractor={item =>
+          item.product.id + '-' + item.selectedColor + '-' + item.selectedSize
+        }
         renderItem={item => <CartItemCard item={item.item} />}
         contentContainerStyle={{gap: 20, padding: 20}}
         ListFooterComponent={() => (
