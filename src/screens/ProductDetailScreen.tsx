@@ -5,9 +5,12 @@ import data from '../data/data.json';
 import LinearGradient from 'react-native-linear-gradient';
 import Header from '../components/Header';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {HomeStackParamList} from '../../App';
+import {HomeStackParamList, RootTabParamList} from '../../App';
 import {formatToUSD} from '../utils/currency';
+import {ToastAndroid} from 'react-native';
 import useCartStore from '../store/cart-store';
+import {useNavigation} from '@react-navigation/native';
+import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 
 const jsonData: Product[] = data.products;
 const getProductById = (id: number): Product | undefined => {
@@ -30,6 +33,8 @@ const ProductDetailScreen = ({navigation, route}: Props) => {
   const [selectedColor, setSelectedColor] = useState<string>();
   const [product, setProduct] = useState<Product>();
   const addItem = useCartStore(state => state.addItem);
+  const tabNavigation =
+    useNavigation<BottomTabNavigationProp<RootTabParamList>>();
 
   useEffect(() => {
     const productId = route.params.productId;
@@ -50,13 +55,16 @@ const ProductDetailScreen = ({navigation, route}: Props) => {
   }
 
   const handleAddItem = () => {
-    if (!selectedColor) {
+    if (!selectedSize) {
+      ToastAndroid.show('Please select a size', ToastAndroid.SHORT);
       return;
     }
-    if (!selectedSize) {
+    if (!selectedColor) {
+      ToastAndroid.show('Please select a color', ToastAndroid.SHORT);
       return;
     }
     addItem(product, selectedColor, selectedSize, 1);
+    tabNavigation.navigate('Cart');
   };
 
   return (
@@ -122,7 +130,9 @@ const ProductDetailScreen = ({navigation, route}: Props) => {
               ))}
             </ScrollView>
           </View>
-          <TouchableOpacity className="rounded-xl bg-[#E55B5B] p-4 w-full items-center justify-center mt-5" onPress={handleAddItem}>
+          <TouchableOpacity
+            className="rounded-xl bg-[#E55B5B] p-4 w-full items-center justify-center mt-5"
+            onPress={handleAddItem}>
             <Text className="text-white font-semibold">Add to Cart</Text>
           </TouchableOpacity>
         </View>

@@ -1,21 +1,13 @@
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-  FlatList,
-} from 'react-native';
+import {View, Text, TouchableOpacity, FlatList} from 'react-native';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import Header from '../components/Header';
-import {CartItem} from '../types/cart';
 import CartItemCard from '../components/CartItemCard';
 import {formatToUSD} from '../utils/currency';
 import useCartStore from '../store/cart-store';
 
 const CartScreen = () => {
-  const cartItems = useCartStore(state => state.items);
+  const {items: cartItems} = useCartStore(state => state);
   const totalPrice = cartItems.reduce((accumulator, item) => {
     return accumulator + item.product.price * item.quantity;
   }, 0);

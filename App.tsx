@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import './global.css';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -12,12 +12,19 @@ import ProductDetailScreen from './src/screens/ProductDetailScreen';
 import useCartStore from './src/store/cart-store';
 import {Text, View} from 'react-native';
 
-const Tab = createBottomTabNavigator();
+export type RootTabParamList = {
+  HomeStack: undefined;
+  Reorder: undefined;
+  Cart: undefined;
+  Account: undefined;
+};
+const Tab = createBottomTabNavigator<RootTabParamList>();
 
 export type HomeStackParamList = {
   Home: undefined;
   ProductDetail: {productId: string};
 };
+
 const HomeStackNavigator = createNativeStackNavigator<HomeStackParamList>();
 const HomeStack = () => {
   return (
@@ -32,7 +39,10 @@ const HomeStack = () => {
 };
 
 const App = () => {
-  const cartItems = useCartStore(state => state.items);
+  const {items: cartItems, loadCart} = useCartStore(state => state);
+  useEffect(() => {
+    loadCart();
+  }, []);
   return (
     <NavigationContainer>
       <Tab.Navigator
